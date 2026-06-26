@@ -1,4 +1,4 @@
-name: lab03_ml
+name: lab03_ml_2026_01
 channels:
   - conda-forge
   - defaults
