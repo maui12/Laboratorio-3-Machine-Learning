@@ -15,7 +15,7 @@ from reports import (
     write_warnings,
 )
 from settings import DEFAULT_CONFIG_PATH, ensure_output_dirs, load_config
-
+from plots import generate_all_plots
 
 def parse_args() -> ArgumentParser:
     parser = ArgumentParser(description="Ejecuta el Laboratorio 03 con validacion cruzada anidada.")
@@ -61,6 +61,7 @@ def main() -> None:
     output_dirs = {name: Path(path) for name, path in config["outputs"].items()}
     tables_dir = output_dirs["tables"]
 
+    figures_dir = output_dirs.get("figures", output_dirs["root"] / "figures")
     write_summary_csv(results_by_target, tables_dir / "resumen_resultados.csv")
     write_json_results(results_by_target, tables_dir / "resultados_detallados.json")
     write_auxiliary_tables(results_by_target, output_dirs)
@@ -68,9 +69,11 @@ def main() -> None:
     write_latex_tables(results_by_target, tables_dir / "resultados_experimentos.tex")
     write_pdf_tables(results_by_target, tables_dir / "resultados_experimentos.pdf")
 
+    generate_all_plots(results_by_target, figures_dir)
     print("Experimentos finalizados.")
     print(f"Tabla LaTeX: {tables_dir / 'resultados_experimentos.tex'}")
     print(f"Tabla PDF:   {tables_dir / 'resultados_experimentos.pdf'}")
+    print(f"Gráficos:    {figures_dir}")
 
 
 if __name__ == "__main__":

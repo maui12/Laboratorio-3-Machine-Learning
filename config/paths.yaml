@@ -8,6 +8,7 @@ outputs:
   tables: "outputs/tables"
   confusion_matrices: "outputs/confusion_matrices"
   per_class: "outputs/per_class"
+  figures: "outputs/figures"
 
 experiment:
   targets:
