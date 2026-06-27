@@ -72,20 +72,8 @@ def write_warnings(results_by_target: dict[str, list[dict[str, Any]]], output_pa
 
 def write_latex_tables(results_by_target: dict[str, list[dict[str, Any]]], output_path: Path) -> None:
     lines = [
-        r"\documentclass{article}",
-        r"\usepackage[utf8]{inputenc}",
-        r"\usepackage[T1]{fontenc}",
-        r"\usepackage[spanish]{babel}",
-        r"\usepackage{booktabs}",
-        r"\usepackage{geometry}",
-        r"\geometry{margin=1.5cm, landscape}",
-        r"\begin{document}",
-        r"\section*{Laboratorio 03: resultados de validacion cruzada anidada}",
-        (
-            "Solo Regresi\\'on Log\\'istica esta implementada. "
-            "Los dem\\'as clasificadores se reportan como \\textit{No implementado}."
-        ),
-        "",
+        r"% Archivo generado automáticamente. Listo para usar con \input{}",
+        r"",
     ]
 
     for target, results in results_by_target.items():
@@ -96,10 +84,11 @@ def write_latex_tables(results_by_target: dict[str, list[dict[str, Any]]], outpu
                 rf"\noindent\textbf{{Distribuci\'on de clases:}} {latex_escape(distribution)}. "
                 rf"\textbf{{n\_min:}} {results[0]['n_min']}. "
                 rf"\textbf{{k externo:}} {results[0]['k_outer']}.",
-                r"\begin{table}[h]",
+                r"\begin{table*}[htbp]",
                 r"\centering",
                 rf"\caption{{Resultados para {latex_escape(target)}}}",
-                r"\scriptsize",
+                r"\vspace{0.2cm}",
+                r"\resizebox{\textwidth}{!}{%",
                 r"\begin{tabular}{p{2.8cm}p{2.0cm}p{1.6cm}p{1.6cm}p{1.8cm}p{1.5cm}p{1.4cm}p{3.4cm}}",
                 r"\toprule",
                 r"Modelo & F1 macro & Balanced Acc. & Recall macro & Precision macro & Estab. & ICN & Hiperparametros / estado \\",
@@ -112,12 +101,12 @@ def write_latex_tables(results_by_target: dict[str, list[dict[str, Any]]], outpu
             [
                 r"\bottomrule",
                 r"\end{tabular}",
-                r"\end{table}",
+                r"}",
+                r"\end{table*}",
                 "",
             ]
         )
 
-    lines.extend([r"\end{document}", ""])
     output_path.write_text("\n".join(lines), encoding="utf-8")
 
 
