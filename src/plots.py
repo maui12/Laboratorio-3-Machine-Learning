@@ -59,7 +59,6 @@ def _plot_best_confusion_matrices(results_by_target: dict[str, list[dict[str, An
         if not implemented:
             continue
 
-        # Seleccionar el mejor modelo según ICN
         best_model = max(implemented, key=lambda x: x.get("icn") or 0.0)
         cm = np.array(best_model["confusion_matrix"])
         labels = best_model["labels"]
@@ -90,10 +89,8 @@ def _plot_normalized_metrics_heatmap(results_by_target: dict[str, list[dict[str,
         norm_df = pd.DataFrame(index=df.index)
         for col, d_name in zip(metrics, display_names):
             if col in ["stability", "icn"]:
-                # Estas ya vienen normalizadas entre 0 y 1 desde evaluation.py
                 norm_df[d_name] = df[col]
             else:
-                # Normalización Min-Max para el resto
                 c_min, c_max = df[col].min(), df[col].max()
                 denom = c_max - c_min + 1e-12
                 norm_df[d_name] = (df[col] - c_min) / denom
